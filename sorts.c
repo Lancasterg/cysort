@@ -5,30 +5,6 @@
 int array_size; /* Keep track of the size of the array */ 
 
 
-
-
-/* Test functions */
-static char helloworld_docs[] = "helloworld( ): Any message you want to put here!!\n";
-
-static PyObject* helloworld(PyObject* self) {
-   return Py_BuildValue("s", "Hello, Python extensions!!");
-}
-
-/* Print a single integer */ 
-static PyObject *test_func(PyObject *self, PyObject *args) {
-	int result;
-
-	if(!PyArg_ParseTuple(args, "i", &result)){
-		return NULL;
-	}
-	printf("single integer: %d\n",result );
-	Py_RETURN_NONE;
-}
-
-
-
-
-
 /**********************************************************************/
 /**************************** Helper Functions ************************/
 /**********************************************************************/
@@ -214,16 +190,14 @@ static PyObject *list_generator(PyObject *self, PyObject *args){
 
 
 /* Python method declarations*/
-static PyMethodDef helloworld_funcs[] = {
-   {"helloworld", (PyCFunction)helloworld, METH_NOARGS, helloworld_docs},
-   {"read_num", (PyCFunction) test_func, METH_VARARGS, NULL},
+static PyMethodDef cysort_funcs[] = {
    {"bubble_sort", (PyCFunction) bubble_sort, METH_VARARGS, bubblesort_docs},
    {"quick_sort", (PyCFunction) quick_sort, METH_VARARGS,quicksort_docs},
    {"list_gen", (PyCFunction) list_generator, METH_VARARGS, NULL},
    { NULL, NULL, 0, NULL }
 };
 
-void inithelloworld(void) {
-   Py_InitModule3("helloworld", helloworld_funcs,
+void initcysort(void) {
+   Py_InitModule3("cysort", cysort_funcs,
                   "Extension module example!");
 }
