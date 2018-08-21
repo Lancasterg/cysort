@@ -14,6 +14,12 @@ Navigate to the cysort folder in terminal and run:
 Usage
 -------------------------------------------------------------------------------
 
+```
+import cysort as cy
+
+values = [69, 23, 43, 54, 89, 12, 34]
+sorted_values = cy.quick_sort(values)
+```
 Author
 -------------------------------------------------------------------------------
 Created by George Lancaster
