@@ -11,16 +11,52 @@ for x in range(1000):
 
 
 def pysort_test(vals):
-	p_sorted = vals.sort()
+	""" 
+	Sort implemented in pure python as the benchmark test. 
+	Args:
+		vals (list): A list of random numbers
+	Returns:
+		vals (list): A sorted list of numbers
+
+	"""
+	length = len(vals)
+	for i in range(len(vals)):
+		for j in range(i,length):
+			if vals[i]>vals[j]:
+				tmp=vals[i]
+				vals[i]=vals[j]
+				vals[j]=tmp
+	return vals
 
 
 def cysort_bubblesort(vals):
+	""" 
+	Cysort bubblesort
+	Args:
+		vals (list): A list of random numbers
+	Returns:
+		vals (list): A sorted list of numbers
+
+	"""
 	c_sorted = c.bubble_sort(values)
+	return c_sorted
 
 def cysort_quicksort(vals):
+	""" 
+	Cysort quicksort test
+	Args:
+		vals (list): A list of random numbers
+	Returns:
+		vals (list): A sorted list of numbers
+
+	"""
 	c_sorted = c.quick_sort(values)
+	return c_sorted
 
 
-print(timeit.timeit('pysort_test(values)', setup="from __main__ import pysort_test, values", number=10000))
-print(timeit.timeit('cysort_bubblesort(values)', setup="from __main__ import cysort_bubblesort, values", number=10000))
-print(timeit.timeit('cysort_quicksort(values)', setup="from __main__ import cysort_quicksort, values", number=10000))
+print("Python sort time:\t" +  str(timeit.timeit('pysort_test(values)',\
+						 setup="from __main__ import pysort_test, values", number=100)))
+print("Cysort bubblesort time:\t" + str(timeit.timeit('cysort_bubblesort(values)',\
+						 setup="from __main__ import cysort_bubblesort, values", number=100)))
+print("Cysort quicksort time: \t" + str(timeit.timeit('cysort_quicksort(values)', \
+						 setup="from __main__ import cysort_quicksort, values", number=100)))
