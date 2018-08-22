@@ -273,12 +273,74 @@ static PyObject *insertion_sort(PyObject *self, PyObject *args) {
 }
 
 
+/*********************************************************************/
+/**************************** selection sort *************************/
+/*********************************************************************/
+
+static char selectionsort_docs[] = "Selection sort implementation in C";
+
+/*
+ * Function: alg_selectionsort
+ * ---------------------------
+ * Implementation of selectionsort in C
+ *
+ * arr: unsorted array of integers
+ * n: number of items in arr
+ *
+ */
+void alg_selectionsort(int arr[], int n){
+	for (int i = 0; i < n; i++){
+		int min = i;
+		for (int j = i+1; j < n; j++){
+			if (arr[j] <= arr[min]){
+				min = j;
+			}
+		}
+		if (min != i){
+			swap(&arr[i], &arr[min]);
+		}
+
+	}
+
+}
+
+/*
+ * Function: selection_sort
+ * ---------------------------
+ * Selection sort function called by Python
+ *
+ * *self: pointer to self
+ * *args: pointer to args passed by Python 
+ *
+ */
+static PyObject *selection_sort(PyObject *self, PyObject *args) {
+	int *c_array; /* pointer to an int, will be an array */
+	PyObject *list;
+	c_array = list_gen(args);
+	alg_selectionsort(c_array, array_size);
+	list = create_pylist(c_array, array_size);
+	return list;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Python method declarations*/
 static PyMethodDef cysort_funcs[] = {
     {"bubble_sort", (PyCFunction) bubble_sort, METH_VARARGS, bubblesort_docs},
     {"quick_sort", (PyCFunction) quick_sort, METH_VARARGS,quicksort_docs},
     {"insertion_sort", (PyCFunction) insertion_sort, METH_VARARGS, insertionsort_docs},
+    {"selection_sort", (PyCFunction) selection_sort, METH_VARARGS, selectionsort_docs},
     {"list_gen", (PyCFunction) list_generator, METH_VARARGS, NULL},
     { NULL, NULL, 0, NULL }
 };
