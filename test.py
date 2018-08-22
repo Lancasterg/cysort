@@ -38,7 +38,7 @@ def cysort_bubblesort(vals):
 		vals (list): A sorted list of numbers
 
 	"""
-	c_sorted = c.bubble_sort(values)
+	c_sorted = c.bubble_sort(vals)
 	return c_sorted
 
 def cysort_quicksort(vals):
@@ -50,13 +50,26 @@ def cysort_quicksort(vals):
 		vals (list): A sorted list of numbers
 
 	"""
-	c_sorted = c.quick_sort(values)
+	c_sorted = c.quick_sort(vals)
 	return c_sorted
 
+def cysort_insertionsort(vals):
+	""" 
+	Cysort insertionsort test
+	Args:
+		vals (list): A list of random numbers
+	Returns:
+		vals (list): A sorted list of numbers
 
-print("Python sort time:\t" +  str(timeit.timeit('pysort_test(values)',\
+	"""
+	c_sorted = c.insertion_sort(vals)
+	return c_sorted
+
+print("Python sort time:\t\t" +  str(timeit.timeit('pysort_test(values)',\
 						 setup="from __main__ import pysort_test, values", number=100)))
-print("Cysort bubblesort time:\t" + str(timeit.timeit('cysort_bubblesort(values)',\
+print("Cysort insertionsort time: \t" + str(timeit.timeit('cysort_insertionsort(values)', \
+						 setup="from __main__ import cysort_insertionsort, values", number=100)))
+print("Cysort bubblesort time:\t\t" + str(timeit.timeit('cysort_bubblesort(values)',\
 						 setup="from __main__ import cysort_bubblesort, values", number=100)))
-print("Cysort quicksort time: \t" + str(timeit.timeit('cysort_quicksort(values)', \
+print("Cysort quicksort time: \t\t" + str(timeit.timeit('cysort_quicksort(values)', \
 						 setup="from __main__ import cysort_quicksort, values", number=100)))

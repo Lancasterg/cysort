@@ -1,69 +1,62 @@
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <time.h>
 
+/*
+ * This file is used for development.  
+ *
+ * Author: 	George Lancaster
+ * Email: 	gl162@brighton.ac.uk
+ */
 
-struct list {
-    int size;
-    int array[];
-};
+void swap(int *xp, int *yp) {
+    int temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+}
 
-
-// Memory allocation and initialisation of structure
-struct list *create_list(struct list *l, int arr_size, int arr[])
+/* Function to print an array */
+void print_array(int A[], int size)
 {
-    // Allocating memory according to user provided
-    // array of characters
-    l = malloc( sizeof(*l) + sizeof(int) * arr_size);
-    l->size = arr_size;
-    return l;
+    int i;
+    for (i=0; i < size; i++)
+        printf("%d ", A[i]);
+    printf("\n");
 }
  
-
-
-
-
-
-void function(int the_array[], int n){
-	for (int j = 0; j < n; j++){
-		the_array[j] = 1;
+/*
+ * Function: alg_insertionsort
+ * ---------------------------
+ * Implementation of insertionsort in C
+ *
+ * arr: unsorted array of integers
+ * n: number of items in arr
+ *
+ */
+void alg_insertionsort(int arr[], int n){
+	for (int i = 0; i < n; i++){
+		int j = i;
+		while (j > 0 && arr[j-1] > arr[j]){
+			swap(&arr[j], &arr[j-1]);
+			j = j-1;
+		}
 	}
 }
-
-
-
-
-
-
 
 
 int main(){
+	int size = 100;
+	int the_arr[size];
+	srand(time(NULL));   // should only be called once
 
-	int arr[] = {1,2,3,4,5,6,7,8,9,10};
-	int n = sizeof(arr) / sizeof(arr[0]);
-
-
-	struct list *s1 = create_list(s1, n, arr);
-
-
-
-	
-	for (int i = 0; i < n; i++){
-		printf("%d", arr[i]);
-	}
-	printf("\n");
-	
-
-	int the_size = s1->size;
-	printf("size: %d\n", the_size);
-
-	int new_arr[n];
-	for (int j = 0; j < the_size; j++){
-		new_arr[j] = s1.array[j];
-	}
-	for (int k = 0; k < the_size; k++){
-		printf("new arr: %d\n", new_arr[k]);
+	for (int i = 0; i < size; i++){
+		the_arr[i] = rand() % 100;
 	}
 
+	printf("unsorted\n");
+	print_array(the_arr, size);
+	alg_insertionsort(the_arr, size);
+	print_array(the_arr, size);
 
 
 	return 0;

@@ -1,6 +1,7 @@
 #include <Python.h>
 
 /*
+ * Cysort module 
  * Author: 	George Lancaster
  * Email: 	gl162@brighton.ac.uk
  */
@@ -85,6 +86,27 @@ PyObject * create_pylist(int arr[], int num_items) {
     return python_val;
 
 }
+
+/*
+ * Function: list_generator
+ * ---------------------------
+ * Boilerplate Python function call
+ *
+ * *self: pointer to self
+ * *args: pointer to args passed by Python 
+ *
+ */
+static PyObject *list_generator(PyObject *self, PyObject *args) {
+    int *p; /* pointer to an int, will be an array */
+    PyObject *list;
+    p = list_gen(args);
+    list = create_pylist(p, array_size);
+
+    return list;
+}
+
+
+
 
 
 /**********************************************************************/
@@ -207,18 +229,48 @@ static PyObject *quick_sort(PyObject *self, PyObject *args) {
 }
 
 
+/*********************************************************************/
+/**************************** Insertion sort *************************/
+/*********************************************************************/
 
+static char insertionsort_docs[] = "Insertion sort implementation in C";
 
-static PyObject *list_generator(PyObject *self, PyObject *args) {
-    int *p; /* pointer to an int, will be an array */
-    PyObject *list;
-    p = list_gen(args);
-    list = create_pylist(p, array_size);
-
-    return list;
+/*
+ * Function: alg_insertionsort
+ * ---------------------------
+ * Implementation of insertionsort in C
+ *
+ * arr: unsorted array of integers
+ * n: number of items in arr
+ *
+ */
+void alg_insertionsort(int arr[], int n){
+	for (int i = 0; i < n; i++){
+		int j = i;
+		while (j > 0 && arr[j-1] > arr[j]){
+			swap(&arr[j], &arr[j-1]);
+			j = j-1;
+		}
+	}
 }
 
-
+/*
+ * Function: insertion_sort
+ * ---------------------------
+ * Insertion sort function called by Python
+ *
+ * *self: pointer to self
+ * *args: pointer to args passed by Python 
+ *
+ */
+static PyObject *insertion_sort(PyObject *self, PyObject *args) {
+	int *c_array; /* pointer to an int, will be an array */
+	PyObject *list;
+	c_array = list_gen(args);
+	alg_insertionsort(c_array, array_size);
+	list = create_pylist(c_array, array_size);
+	return list;
+}
 
 
 
@@ -226,6 +278,7 @@ static PyObject *list_generator(PyObject *self, PyObject *args) {
 static PyMethodDef cysort_funcs[] = {
     {"bubble_sort", (PyCFunction) bubble_sort, METH_VARARGS, bubblesort_docs},
     {"quick_sort", (PyCFunction) quick_sort, METH_VARARGS,quicksort_docs},
+    {"insertion_sort", (PyCFunction) insertion_sort, METH_VARARGS, insertionsort_docs},
     {"list_gen", (PyCFunction) list_generator, METH_VARARGS, NULL},
     { NULL, NULL, 0, NULL }
 };
