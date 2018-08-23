@@ -323,9 +323,112 @@ static PyObject *selection_sort(PyObject *self, PyObject *args) {
 }
 
 
+/*********************************************************************/
+/**************************** Parallel sort *************************/
+/*********************************************************************/
+
+
+static char par_quicksort_docs[] = "Parallel quicksort implementation in C";
 
 
 
+
+
+
+
+
+
+
+int partition(int * a, int p, int r)
+{
+    int lt[r-p];
+    int gt[r-p];
+    int i;
+    int j;
+    int key = a[r];
+    int lt_n = 0;
+    int gt_n = 0;
+
+#pragma omp parallel for
+    for(i = p; i < r; i++){
+        if(a[i] < a[r]){
+            lt[lt_n++] = a[i];
+        }else{
+            gt[gt_n++] = a[i];
+        }   
+    }   
+
+    for(i = 0; i < lt_n; i++){
+        a[p + i] = lt[i];
+    }   
+
+    a[p + lt_n] = key;
+
+    for(j = 0; j < gt_n; j++){
+        a[p + lt_n + j + 1] = gt[j];
+    }   
+
+    return p + lt_n;
+}
+
+
+
+
+/*
+ * Function: par_alg_quicksort
+ * ---------------------------
+ * Parralel implementation of quicksort in C
+ *
+ * arr: unsorted array of integers
+ * p: starting point
+ * r: end point
+ *
+ */
+void alg_par_quicksort(int * a, int p, int r)
+{
+    int div;
+
+    if(p < r){ 
+        div = partition(a, p, r); 
+#pragma omp parallel sections
+        {   
+#pragma omp section
+            alg_par_quicksort(a, p, div - 1); 
+#pragma omp section
+            alg_par_quicksort(a, div + 1, r); 
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * Function: selection_sort
+ * ---------------------------
+ * Selection sort function called by Python
+ *
+ * *self: pointer to self
+ * *args: pointer to args passed by Python 
+ *
+ */
+static PyObject *par_quick_sort(PyObject *self, PyObject *args) {
+    int *c_array; /* pointer to an int, will be an array */
+    PyObject *list;
+    c_array = list_gen(args);
+    alg_par_quicksort(c_array, 0, array_size);
+    list = create_pylist(c_array, array_size);
+    return list;
+}
 
 
 
@@ -341,6 +444,7 @@ static PyMethodDef cysort_funcs[] = {
     {"quick_sort", (PyCFunction) quick_sort, METH_VARARGS,quicksort_docs},
     {"insertion_sort", (PyCFunction) insertion_sort, METH_VARARGS, insertionsort_docs},
     {"selection_sort", (PyCFunction) selection_sort, METH_VARARGS, selectionsort_docs},
+    {"par_quick_sort", (PyCFunction) par_quick_sort, METH_VARARGS, par_quicksort_docs},
     {"list_gen", (PyCFunction) list_generator, METH_VARARGS, NULL},
     { NULL, NULL, 0, NULL }
 };

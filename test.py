@@ -78,6 +78,11 @@ def cysort_selectionsort(vals):
 	c_sorted = c.selection_sort(vals)
 	return c_sorted
 
+def cysort_parquicksort(vals):
+	c_sorted = c.par_quick_sort(vals)
+	return c_sorted
+
+
 print("Python sort time:\t\t" +  str(timeit.timeit('pysort_test(values)',\
 						 setup="from __main__ import pysort_test, values", number=100)))
 print("Cysort insertionsort time: \t" + str(timeit.timeit('cysort_insertionsort(values)', \
@@ -88,4 +93,6 @@ print("Cysort quicksort time: \t\t" + str(timeit.timeit('cysort_quicksort(values
 						 setup="from __main__ import cysort_quicksort, values", number=100)))
 print("Cysort selectionsort time: \t" + str(timeit.timeit('cysort_selectionsort(values)', \
 						 setup="from __main__ import cysort_selectionsort, values", number=100)))
+print("Cysort par_quicksort time: \t" + str(timeit.timeit('cysort_parquicksort(values)', \
+						 setup="from __main__ import cysort_parquicksort, values", number=100)))
 
