@@ -1,4 +1,6 @@
 #include <Python.h>
+#include <omp.h>
+#include <stdio.h>
 
 /*
  * Cysort module 
@@ -7,7 +9,7 @@
  */
 
 /* Keep track of the size of the array */
-int array_size; 
+int array_size;  
 
 
 /**********************************************************************/
@@ -330,15 +332,6 @@ static PyObject *selection_sort(PyObject *self, PyObject *args) {
 
 static char par_quicksort_docs[] = "Parallel quicksort implementation in C";
 
-
-
-
-
-
-
-
-
-
 int partition(int * a, int p, int r)
 {
     int lt[r-p];
@@ -372,8 +365,6 @@ int partition(int * a, int p, int r)
 }
 
 
-
-
 /*
  * Function: par_alg_quicksort
  * ---------------------------
@@ -403,19 +394,10 @@ void alg_par_quicksort(int * a, int p, int r)
 
 
 
-
-
-
-
-
-
-
-
-
 /*
- * Function: selection_sort
+ * Function: par_quick_sort
  * ---------------------------
- * Selection sort function called by Python
+ * Parallel quick sort function called by Python
  *
  * *self: pointer to self
  * *args: pointer to args passed by Python 
@@ -429,13 +411,6 @@ static PyObject *par_quick_sort(PyObject *self, PyObject *args) {
     list = create_pylist(c_array, array_size);
     return list;
 }
-
-
-
-
-
-
-
 
 
 /* Python method declarations*/
